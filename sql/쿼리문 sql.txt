@@ -1,0 +1,335 @@
+-- 쿼리문만
+
+
+--  hotels 테이블에 정보 통합 쿼리문 
+
+SELECT 
+    H.hotel_id, 
+    H.hotel_name, 
+    L.loc_name, 
+    H.star_rating, 
+    H.standard_price,               -- 스탠다드 방 가격
+    H.deluxe_price,                 -- 디럭스 방 가격
+    H.premium_price,                -- 프리미엄 방 가격
+    H.standard_r AS standard_room_count,  -- 스탠다드 방 개수
+    H.deluxe_r AS deluxe_room_count,      -- 디럭스 방 개수
+    H.premium_r AS premium_room_count,    -- 프리미엄 방 개수
+    H.contact_number, 
+    H.address, 
+    GROUP_CONCAT(A.amenity_name SEPARATOR ', ') AS amenities, 
+    H.image_url1, 
+    H.image_url2,       
+    H.image_url3,       
+    H.image_urls,       -- 스탠다드 룸 이미지
+    H.image_urld,       -- 디럭스 룸 이미지
+    H.image_urlp,       -- 프리미엄 룸 이미지
+    H.homepage_url
+FROM 
+    Hotels H
+JOIN 
+    HotelAmenities HA ON H.hotel_id = HA.hotel_id
+JOIN 
+    Amenities A ON HA.amenity_id = A.amenity_id
+JOIN 
+    Location L ON H.loc_id = L.loc_id
+GROUP BY 
+    H.hotel_id, 
+    H.hotel_name, 
+    L.loc_name, 
+    H.star_rating, 
+    H.standard_price, 
+    H.deluxe_price, 
+    H.premium_price, 
+    H.standard_r, 
+    H.deluxe_r, 
+    H.premium_r, 
+    H.contact_number, 
+    H.address, 
+    H.image_url1, 
+    H.image_url2, 
+    H.image_url3, 
+    H.image_urls, 
+    H.image_urld, 
+    H.image_urlp, 
+    H.homepage_url;
+
+
+-- 전체 정보 (즐겨찾기한 user_id와 user_name 조회)
+SELECT 
+    H.hotel_id, 
+    H.hotel_name, 
+    L.loc_name, 
+    H.star_rating, 
+    H.standard_price,           -- 스탠다드 방 가격
+    H.deluxe_price,             -- 디럭스 방 가격
+    H.premium_price,            -- 프리미엄 방 가격
+    H.standard_r AS standard_room_count,  -- 스탠다드 방 개수
+    H.deluxe_r AS deluxe_room_count,      -- 디럭스 방 개수
+    H.premium_r AS premium_room_count,     -- 프리미엄 방 개수
+    H.contact_number, 
+    H.address, 
+    GROUP_CONCAT(A.amenity_name SEPARATOR ', ') AS amenities, 
+    H.image_url1, 
+    H.homepage_url,
+    f.user_id,                 
+    u.name AS user_name       
+FROM Hotels H
+JOIN HotelAmenities HA ON H.hotel_id = HA.hotel_id
+JOIN Amenities A ON HA.amenity_id = A.amenity_id
+JOIN Location L ON H.loc_id = L.loc_id
+LEFT JOIN favorites f ON H.hotel_id = f.hotel_id  
+LEFT JOIN users u ON f.user_id = u.user_id       
+GROUP BY H.hotel_id, 
+         H.hotel_name, 
+         L.loc_name, 
+         H.star_rating, 
+         H.standard_price, 
+         H.deluxe_price, 
+         H.premium_price, 
+         H.standard_r, 
+         H.deluxe_r, 
+         H.premium_r, 
+         H.contact_number, 
+         H.address, 
+         H.image_url1, 
+         H.homepage_url,
+         f.user_id, 
+         u.name;
+
+-- 즐겨찾기 안된 호텔들은 배제하는 쿼리문 (예약한 날짜도 포함)
+SELECT 
+    H.hotel_id, 
+    H.hotel_name, 
+    L.loc_name, 
+    H.star_rating, 
+    H.standard_price,           -- 스탠다드 방 가격
+    H.deluxe_price,             -- 디럭스 방 가격
+    H.premium_price,            -- 프리미엄 방 가격
+    H.standard_r AS standard_room_count,  -- 스탠다드 방 개수
+    H.deluxe_r AS deluxe_room_count,      -- 디럭스 방 개수
+    H.premium_r AS premium_room_count,     -- 프리미엄 방 개수
+    H.contact_number, 
+    H.address, 
+    GROUP_CONCAT(A.amenity_name SEPARATOR ', ') AS amenities, 
+    H.image_url1, 
+    H.homepage_url,
+    f.user_id,              
+    u.name AS user_name,       
+    f.created_at AS favorite_date 
+FROM Hotels H
+JOIN HotelAmenities HA ON H.hotel_id = HA.hotel_id
+JOIN Amenities A ON HA.amenity_id = A.amenity_id
+JOIN Location L ON H.loc_id = L.loc_id
+INNER JOIN favorites f ON H.hotel_id = f.hotel_id  
+INNER JOIN users u ON f.user_id = u.user_id    
+GROUP BY H.hotel_id, 
+         H.hotel_name, 
+         L.loc_name, 
+         H.star_rating, 
+         H.standard_price, 
+         H.deluxe_price, 
+         H.premium_price, 
+         H.standard_r, 
+         H.deluxe_r, 
+         H.premium_r, 
+         H.contact_number, 
+         H.address, 
+         H.image_url1, 
+         H.homepage_url,
+         f.user_id, 
+         u.name,
+         f.created_at;  
+
+
+-- 관광명소{ loc_id를 지역명으로 보여주게 하는 쿼리문 }
+
+SELECT TA.attraction_name, L.loc_name, TA.features, TA.address, TA.homepage, TA.image_url
+FROM TouristAttractions TA
+JOIN Location L ON TA.loc_id = L.loc_id;
+
+
+--특정 유저의 즐겨찾기를 조회할 때
+SELECT 
+    u.user_id AS user_id,         
+    u.name AS user_name,
+    u.birth_date AS user_birth_date,
+    h.hotel_name AS favorite_hotel_name,
+    f.created_at AS favorite_date
+FROM favorites f
+JOIN users u ON f.user_id = u.user_id
+JOIN hotels h ON f.hotel_id = h.hotel_id
+WHERE f.user_id = ?;             -- ??에 user id추가
+
+
+
+--전체 유저의 즐겨찾기를 조회할 때
+SELECT 
+    u.user_id AS user_id, 
+    u.name AS user_name,
+    u.birth_date AS user_birth_date,
+    h.hotel_name AS favorite_hotel_name,
+    f.created_at AS favorite_date
+FROM favorites f
+JOIN users u ON f.user_id = u.user_id
+JOIN hotels h ON f.hotel_id = h.hotel_id;
+
+
+-- Standard Room 조회
+SELECT 
+    sr.reservation_id,         -- 예약 ID
+    u.name AS user_name,        -- 사용자 이름
+    h.hotel_name,               -- 호텔 이름
+    h.image_urls,               -- 호텔 이미지 URL
+    sr.guest_name,              -- 손님 이름
+    sr.check_in,                -- 체크인 날짜
+    sr.check_out,               -- 체크아웃 날짜
+    sr.room_info,               -- 객실 정보
+    sr.price                    -- 객실 가격
+FROM 
+    standard_room_reservation sr
+JOIN 
+    Users u ON sr.user_id = u.user_id
+JOIN 
+    Hotels h ON sr.hotel_id = h.hotel_id;
+
+
+
+-- Deluxe Room 조회
+SELECT 
+    dr.reservation_id,
+    u.name AS user_name,
+    h.hotel_name,
+    h.image_urld,
+    dr.guest_name,
+    dr.check_in,
+    dr.check_out,
+    dr.room_info,
+    dr.price
+FROM 
+    deluxe_room_reservation dr
+JOIN 
+    Users u ON dr.user_id = u.user_id
+JOIN 
+    Hotels h ON dr.hotel_id = h.hotel_id;
+
+
+-- Premium Room 조회
+SELECT 
+    pr.reservation_id,
+    u.name AS user_name,
+    h.hotel_name,
+    h.image_urlp,
+    pr.guest_name,
+    pr.check_in,
+    pr.check_out,
+    pr.room_info,
+    pr.price
+FROM 
+    premium_room_reservation pr
+JOIN 
+    Users u ON pr.user_id = u.user_id
+JOIN 
+    Hotels h ON pr.hotel_id = h.hotel_id;
+
+
+-- 실내수영장 테이블 조회
+SELECT 
+    IP.hotel_id,
+    IP.hotel_name,
+    L.loc_name AS location,
+    IP.star_rating,
+    IP.standard_r AS standard_room_count,
+    IP.deluxe_r AS deluxe_room_count,
+    IP.premium_r AS premium_room_count,
+    IP.standard_price,
+    IP.deluxe_price,
+    IP.premium_price,
+    IP.contact_number,
+    IP.homepage_url,
+    IP.address,
+    IP.image_url1,
+    IP.image_url2,
+    IP.image_url3
+FROM 
+    IndoorPool IP
+JOIN 
+    Location L ON IP.loc_id = L.loc_id;
+
+-- 오션뷰 테이블 조회
+SELECT 
+    OV.hotel_id,
+    OV.hotel_name,
+    L.loc_name AS location,
+    OV.star_rating,
+    OV.standard_r AS standard_room_count,
+    OV.deluxe_r AS deluxe_room_count,
+    OV.premium_r AS premium_room_count,
+    OV.standard_price,
+    OV.deluxe_price,
+    OV.premium_price,
+    OV.contact_number,
+    OV.homepage_url,
+    OV.address,
+    OV.image_url1,
+    OV.image_url2,
+    OV.image_url3
+FROM 
+    OceanView OV
+JOIN 
+    Location L ON OV.loc_id = L.loc_id;
+
+
+--한옥테이블 조회
+SELECT 
+    HN.hotel_id,
+    HN.hotel_name,
+    L.loc_name AS location,
+    HN.star_rating,
+    HN.standard_r AS standard_room_count,
+    HN.deluxe_r AS deluxe_room_count,
+    HN.premium_r AS premium_room_count,
+    HN.standard_price,
+    HN.deluxe_price,
+    HN.premium_price,
+    HN.contact_number,
+    HN.homepage_url,
+    HN.address,
+    HN.image_url1,
+    HN.image_url2,
+    HN.image_url3
+FROM 
+    Hanok HN
+JOIN 
+    Location L ON HN.loc_id = L.loc_id;
+
+--펜션테이블 조회
+SELECT 
+    P.hotel_id,
+    P.hotel_name,
+    L.loc_name AS location,
+    P.star_rating,
+    P.standard_r AS standard_room_count,
+    P.deluxe_r AS deluxe_room_count,
+    P.premium_r AS premium_room_count,
+    P.standard_price,
+    P.deluxe_price,
+    P.premium_price,
+    P.contact_number,
+    P.homepage_url,
+    P.address,
+    P.image_url1,
+    P.image_url2,
+    P.image_url3
+FROM 
+    Pension P
+JOIN 
+    Location L ON P.loc_id = L.loc_id;
+
+
+
+
+
+
+
+
+

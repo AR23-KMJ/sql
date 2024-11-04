@@ -1,0 +1,246 @@
+-- 테이블 sql
+
+-- 호텔 테이블
+CREATE TABLE hotels (
+  hotel_id int NOT NULL AUTO_INCREMENT,
+  hotel_name varchar(100) NOT NULL,
+  loc_id int NOT NULL,
+  star_rating int DEFAULT NULL,
+  standard_r int NOT NULL,
+  deluxe_r int NOT NULL,
+  premium_r int NOT NULL,
+  standard_price int NOT NULL,
+  deluxe_price int NOT NULL,
+  premium_price int NOT NULL,
+  contact_number varchar(15) DEFAULT NULL,
+  homepage_url varchar(255) DEFAULT NULL,
+  address varchar(255) DEFAULT NULL,
+  amenity_id int DEFAULT NULL,
+  image_url1 varchar(255) DEFAULT NULL,
+  image_url2 varchar(255) DEFAULT NULL,
+  image_url3 varchar(255) DEFAULT NULL,
+  image_urls varchar(255) DEFAULT NULL,
+  image_urld varchar(255) DEFAULT NULL,
+  image_urlp varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`hotel_id`),
+  CONSTRAINT `hotels_chk_1` CHECK ((`star_rating` between 1 and 5))
+);
+
+-- 혹시나 위에 호텔 테이블 안되면 백업용
+CREATE TABLE Hotels (
+    hotel_id INT PRIMARY KEY AUTO_INCREMENT, -- 호텔 id
+    hotel_name VARCHAR(100) NOT NULL, -- 호텔 이름
+    loc_id INT NOT NULL, -- 지역 
+    star_rating INT CHECK (star_rating BETWEEN 1 AND 5), -- 호텔 성급
+    standard_r INT NOT NULL, -- 스탠다드 방 개수
+    deluxe_r INT NOT NULL, -- 디럭스 방 개수
+    premium_r INT NOT NULL, -- 프리미엄 방 개수
+    standard_price INT NOT NULL, -- 스탠다드 방 가격 (1박당)
+    deluxe_price INT NOT NULL, -- 디럭스 방 가격 (1박당)
+    premium_price INT NOT NULL, -- 프리미엄 방 가격 (1박당)
+    contact_number VARCHAR(15), -- 호텔 전화 번호
+    homepage_url VARCHAR(255),  -- 호텔 홈페이지 URL
+    address VARCHAR(255),       -- 호텔 주소
+    image_url VARCHAR(255),     -- 호텔 이미지 URL
+    amenity_id INT -- 호텔 편의시설 ID
+);
+
+CREATE TABLE OceanView (
+    hotel_id int NOT NULL AUTO_INCREMENT,
+    hotel_name VARCHAR(100) NOT NULL, -- 호텔 이름
+    loc_id INT NOT NULL, -- 지역 ID
+    star_rating INT DEFAULT NULL, -- 성급
+    standard_r INT NOT NULL, -- 스탠다드 방 개수
+    deluxe_r INT NOT NULL, -- 디럭스 방 개수
+    premium_r INT NOT NULL, -- 프리미엄 방 개수
+    standard_price INT NOT NULL, -- 스탠다드 방 가격
+    deluxe_price INT NOT NULL, -- 디럭스 방 가격
+    premium_price INT NOT NULL, -- 프리미엄 방 가격
+    contact_number VARCHAR(15) DEFAULT NULL, -- 연락처
+    homepage_url VARCHAR(255) DEFAULT NULL, -- 홈페이지 URL
+    address VARCHAR(255) DEFAULT NULL, -- 주소
+	amenity_id int DEFAULT NULL,
+    image_url1 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 1
+    image_url2 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 2
+    image_url3 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 3
+    image_urls VARCHAR(255) DEFAULT NULL, -- 이미지 URL (여러 개)
+    image_urld VARCHAR(255) DEFAULT NULL, -- 이미지 URL (디럭스)
+    image_urlp VARCHAR(255) DEFAULT NULL, -- 이미지 URL (프리미엄)
+    PRIMARY KEY (hotel_id), -- 기본 키 설정
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(hotel_id) -- 외래 키 설정
+);
+
+CREATE TABLE IndoorPool (
+   hotel_id int NOT NULL AUTO_INCREMENT,
+    hotel_name VARCHAR(100) NOT NULL, -- 호텔 이름
+    loc_id INT NOT NULL, -- 지역 ID
+    star_rating INT DEFAULT NULL, -- 성급
+    standard_r INT NOT NULL, -- 스탠다드 방 개수
+    deluxe_r INT NOT NULL, -- 디럭스 방 개수
+    premium_r INT NOT NULL, -- 프리미엄 방 개수
+    standard_price INT NOT NULL, -- 스탠다드 방 가격
+    deluxe_price INT NOT NULL, -- 디럭스 방 가격
+    premium_price INT NOT NULL, -- 프리미엄 방 가격
+    contact_number VARCHAR(15) DEFAULT NULL, -- 연락처
+    homepage_url VARCHAR(255) DEFAULT NULL, -- 홈페이지 URL
+    address VARCHAR(255) DEFAULT NULL, -- 주소
+   amenity_id int DEFAULT NULL,
+    image_url1 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 1
+    image_url2 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 2
+    image_url3 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 3
+    image_urls VARCHAR(255) DEFAULT NULL, -- 이미지 URL (여러 개)
+    image_urld VARCHAR(255) DEFAULT NULL, -- 이미지 URL (디럭스)
+    image_urlp VARCHAR(255) DEFAULT NULL, -- 이미지 URL (프리미엄)
+    PRIMARY KEY (hotel_id), -- 기본 키 설정
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(hotel_id) -- 외래 키 설정
+);
+
+CREATE TABLE Pension (
+    hotel_id int NOT NULL AUTO_INCREMENT,
+    hotel_name VARCHAR(100) NOT NULL, -- 호텔 이름
+    loc_id INT NOT NULL, -- 지역 ID
+    star_rating INT DEFAULT NULL, -- 성급
+    standard_r INT NOT NULL, -- 스탠다드 방 개수
+    deluxe_r INT NOT NULL, -- 디럭스 방 개수
+    premium_r INT NOT NULL, -- 프리미엄 방 개수
+    standard_price INT NOT NULL, -- 스탠다드 방 가격
+    deluxe_price INT NOT NULL, -- 디럭스 방 가격
+    premium_price INT NOT NULL, -- 프리미엄 방 가격
+    contact_number VARCHAR(15) DEFAULT NULL, -- 연락처
+    homepage_url VARCHAR(255) DEFAULT NULL, -- 홈페이지 URL
+    address VARCHAR(255) DEFAULT NULL, -- 주소
+   amenity_id int DEFAULT NULL,
+    image_url1 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 1
+    image_url2 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 2
+    image_url3 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 3
+    image_urls VARCHAR(255) DEFAULT NULL, -- 이미지 URL (여러 개)
+    image_urld VARCHAR(255) DEFAULT NULL, -- 이미지 URL (디럭스)
+    image_urlp VARCHAR(255) DEFAULT NULL, -- 이미지 URL (프리미엄)
+    PRIMARY KEY (hotel_id), -- 기본 키 설정
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(hotel_id) -- 외래 키 설정
+);
+
+CREATE TABLE Hanok (
+    hotel_id int NOT NULL AUTO_INCREMENT,
+    hotel_name VARCHAR(100) NOT NULL, -- 호텔 이름
+    loc_id INT NOT NULL, -- 지역 ID
+    star_rating INT DEFAULT NULL, -- 성급
+    standard_r INT NOT NULL, -- 스탠다드 방 개수
+    deluxe_r INT NOT NULL, -- 디럭스 방 개수
+    premium_r INT NOT NULL, -- 프리미엄 방 개수
+    standard_price INT NOT NULL, -- 스탠다드 방 가격
+    deluxe_price INT NOT NULL, -- 디럭스 방 가격
+    premium_price INT NOT NULL, -- 프리미엄 방 가격
+    contact_number VARCHAR(15) DEFAULT NULL, -- 연락처
+    homepage_url VARCHAR(255) DEFAULT NULL, -- 홈페이지 URL
+    address VARCHAR(255) DEFAULT NULL, -- 주소
+   amenity_id int DEFAULT NULL,
+    image_url1 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 1
+    image_url2 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 2
+    image_url3 VARCHAR(255) DEFAULT NULL, -- 이미지 URL 3
+    image_urls VARCHAR(255) DEFAULT NULL, -- 이미지 URL (여러 개)
+    image_urld VARCHAR(255) DEFAULT NULL, -- 이미지 URL (디럭스)
+    image_urlp VARCHAR(255) DEFAULT NULL, -- 이미지 URL (프리미엄)
+    PRIMARY KEY (hotel_id), -- 기본 키 설정
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(hotel_id) -- 외래 키 설정
+);
+
+
+
+-- 어메니티 테이블
+CREATE TABLE Amenities (
+    amenity_id INT PRIMARY KEY AUTO_INCREMENT,
+    amenity_name VARCHAR(100) NOT NULL
+);
+
+
+--지역
+CREATE TABLE Location(
+	loc_id  INT PRIMARY KEY AUTO_INCREMENT,
+	loc_name VARCHAR(10) NOT NULL
+);
+
+
+--호텔 어메니티
+CREATE TABLE HotelAmenities (
+    hotel_id INT NOT NULL,
+    amenity_id INT NOT NULL,
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(hotel_id),
+    FOREIGN KEY (amenity_id) REFERENCES Amenities(amenity_id),
+    PRIMARY KEY (hotel_id, amenity_id)
+);
+
+
+--관광명소
+CREATE TABLE TouristAttractions (
+    attraction_name VARCHAR(255),
+    loc_id INT,
+    features VARCHAR(255),
+    address VARCHAR(255),
+    homepage VARCHAR(255),
+    image_url VARCHAR(255)
+);
+
+-- 회원 정보
+CREATE TABLE Users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    address VARCHAR(255),
+    birth_date DATE
+);
+
+
+-- 스탠다드 룸 예약 정보
+CREATE TABLE standard_room_reservation (
+    reservation_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL, -- Users 테이블에서 가져온 유저 ID
+    hotel_id INT NOT NULL, -- Hotels 테이블에서 가져온 호텔 ID
+    guest_name VARCHAR(100) NOT NULL, -- 손님 이름
+    check_in DATE NOT NULL, -- 체크인 날짜
+    check_out DATE NOT NULL, -- 체크아웃 날짜
+    room_info VARCHAR(100) NOT NULL, -- 객실 정보
+    price INT NOT NULL, -- 객실 가격 (standard_price에서 가져옴)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id), -- Users 테이블과 외래키 연관
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(hotel_id) -- Hotels 테이블과 외래키 연관
+);
+
+-- 디럭스 룸 예약 정보
+CREATE TABLE deluxe_room_reservation (
+    reservation_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL, 
+    hotel_id INT NOT NULL,
+    guest_name VARCHAR(100) NOT NULL,
+    check_in DATE NOT NULL,
+    check_out DATE NOT NULL,
+    room_info VARCHAR(100) NOT NULL,
+    price INT NOT NULL, -- 객실 가격 (deluxe_price에서 가져옴)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(hotel_id)
+);
+
+-- 프리미엄 룸 예약 정보
+CREATE TABLE premium_room_reservation (
+    reservation_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    hotel_id INT NOT NULL,
+    guest_name VARCHAR(100) NOT NULL,
+    check_in DATE NOT NULL,
+    check_out DATE NOT NULL,
+    room_info VARCHAR(100) NOT NULL,
+    price INT NOT NULL, -- 객실 가격 (premium_price에서 가져옴)
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(hotel_id)
+);
+
+--즐겨찾기 정보
+CREATE TABLE favorites (
+    favorite_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,                     
+    hotel_id INT NOT NULL,                     
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, --즐겨찾기 등록 날짜
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE, --외래키 설정
+    FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id) ON DELETE CASCADE
+);
+
